@@ -6,9 +6,13 @@ import time
 import sys
 import pyautogui
 
-actionValue = [100]
+actionValue = [3]
 moveValue = [10]
 clickValue = [15]
+bakLRFlag = ''
+bakLRValue = 0
+bakUDFlag = ''
+bakUDValue = 0
 
 def main():
 	args = sys.argv
@@ -27,6 +31,10 @@ def main():
 	handMouse(x, y)
 
 def drawGUI(width, x):
+	global actionValue
+	global moveValue
+	global clickValue
+
 	frame[:] = (49, 52, 49)
 	cvui.rect(frame,   2,   2, 445, 190, 0xffaa77, 0x4444aa)
 	cvui.rect(frame,   2, 195, 445,  55, 0xffaa77, 0x4444aa)
@@ -82,6 +90,11 @@ def drawGUI(width, x):
 
 
 def handMouse(x, y):
+	global bakLRFlag
+	global bakLRValue
+	global bakUDFlag
+	global bakUDValue
+	
 	#Open Camera object
 	cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
@@ -98,12 +111,16 @@ def handMouse(x, y):
 
 	vFlag = False # 上下反転フラグ
 	hFlag = False # 水平反転フラグ
-	sFlag = True # 制御停止フラグ
-	aFlag = '' # モーション記録フラグ
+	sFlag = False # 制御停止フラグ
+	#sFlag = True # 制御停止フラグ
+	lrFlag = '' # モーション記録フラグ(左右)
+	udFlag = '' # モーション記録フラグ(上下)
 	cFlag = 0 # クリック検知フラグ
 	eFlag = 'Upper' # 指検知方向フラグ
 
 	#######################
+
+	aCounter = 0
 
 	while(1):
 		ret = drawGUI(300, 10)
@@ -224,9 +241,10 @@ def handMouse(x, y):
 							if sndPos[0] > Pos[0]:
 								sndPos = Pos
 
-			cv2.circle(frame,fstPos,10,[100,255,255],3)
-			cv2.circle(frame,sndPos,10,[100,255,255],3)
+			#cv2.circle(frame,fstPos,10,[100,255,255],3)
+			#cv2.circle(frame,sndPos,10,[100,255,255],3)
 			cv2.line(frame,sndPos,fstPos,[0,255,0],1)
+			# print("clickValue: ", str(sndPos[0] - fstPos[0]))
 
 			if cFlag == 0:
 				if (sndPos[0] - fstPos[0]) > (clickValue[0] * 3):
@@ -250,28 +268,31 @@ def handMouse(x, y):
 			if prePos[0] == 0 and prePos[1] == 0:
 				prePos = fstPos
 			else:
-				if aFlag == '':
-					if   (nowPos[0] - prePos[0])  > actionValue: # Right
-						aFlag = 'Right'
-					elif (prePos[0] - nowPos[0]) > actionValue: # Left
-						aFlag = 'Left'
-					elif (nowPos[1] - prePos[1]) > actionValue: # Up
-						aFlag = 'Up'
-					elif (prePos[1] - nowPos[1]) > actionValue: # Down
-						aFlag = 'Down'
-					#print(aFlag)
-					if sFlag == False:
-						print(' - - - - ')
-						print(nowPos)
-						print(prePos)
-						print((nowPos[0] - prePos[0]) * moveValue[0])
-						print((nowPos[1] - prePos[1]) * moveValue[0])
-						print(' - - - - ')
-						mousePosition = pyautogui.position()
-						print(mousePosition)
-						print(' - - - - ')
+				#print(aCounter)
+				if lrFlag == '':
+					#print(str(nowPos),str(prePos))
+					if   (nowPos[0] - prePos[0]) > actionValue[0]: # Right
+						lrFlag = 'Right'
+						aCounter = actionValue[0] * 3
+					elif (prePos[0] - nowPos[0]) > actionValue[0]: # Left
+						lrFlag = 'Left'
+						aCounter = actionValue[0] * 3
 				else:
-					aFlag = mouseMove(aFlag, sFlag, nowPos, prePos)
+					if aCounter > 1:
+						aCounter = aCounter - 1
+						if lrFlag == 'Right' and bakLRFlag != 'Left' or lrFlag == 'Left' and bakLRFlag != 'Right':
+							lrFlag = mouseMove(lrFlag, sFlag, nowPos, prePos)
+					else:
+						bakLRFlag = ''
+						lrFlag = ''
+
+				if udFlag == '':
+					if (nowPos[1] - prePos[1]) > actionValue[0]: # Up
+						udFlag = 'Up'
+					elif (prePos[1] - nowPos[1]) > actionValue[0]: # Down
+						udFlag = 'Down'
+				else:
+					udFlag = mouseMove(udFlag, sFlag, nowPos, prePos)
 
 			prePos = nowPos
 
@@ -287,34 +308,50 @@ def handMouse(x, y):
 			break
 
 def mouseMove(aFlag, sFlag, nowPos, prePos):
+	global bakLRFlag
+	global bakLRValue
+	global bakUDFlag
+	global bakUDValue
+
 	if aFlag == 'Right':
-		if (nowPos[0] - prePos[0]) > 0:
+		if (nowPos[0] - prePos[0]) > actionValue[0]:
 			if sFlag == False:
-				mouseMoveDo(nowPos[0] - prePos[0], nowPos[1] - prePos[1], nowPos[0] - prePos[0] , 0)
-			else:
-				return ''
+				mouseMoveDo(aFlag, nowPos[0] - prePos[0], nowPos[1] - prePos[1], nowPos[0] - prePos[0] , 0)
+		else:
+			bakLRFlag = 'Right'
+			bakLRValue = nowPos[0] - prePos[0]
+			return ''
 	elif aFlag == 'Left':
-		if (prePos[0] - nowPos[0]) > 0:
+		if (prePos[0] - nowPos[0]) > actionValue[0]:
 			if sFlag == False:
-				mouseMoveDo(nowPos[0] - prePos[0], nowPos[1] - prePos[1], prePos[0] - nowPos[0] , 0)
-			else:
-				return ''
+				mouseMoveDo(aFlag, nowPos[0] - prePos[0], nowPos[1] - prePos[1], prePos[0] - nowPos[0] , 0)
+		else:
+			bakLRFlag = 'Left'
+			bakLRValue = prePos[0] - nowPos[0]
+			return ''
 	elif aFlag == 'Up':
-		if (nowPos[1] - prePos[1]) > 0:
+		if (nowPos[1] - prePos[1]) > actionValue[0]:
 			if sFlag == False:
-				mouseMoveDo(nowPos[0] - prePos[0], nowPos[1] - prePos[1], 0, nowPos[1] - prePos[1])
-			else:
-				return ''
+				mouseMoveDo(aFlag, nowPos[0] - prePos[0], nowPos[1] - prePos[1], 0, nowPos[1] - prePos[1])
+		else:
+			bakUDFlag = 'Up'
+			bakUDValue = nowPos[1] - prePos[1]
+			return ''
 	elif aFlag == 'Down':
-		if (prePos[1] - nowPos[1]) > 0:
+		if (prePos[1] - nowPos[1]) > actionValue[0]:
 			if sFlag == False:
-				mouseMoveDo(nowPos[0] - prePos[0], nowPos[1] - prePos[1], 0, prePos[1] - nowPos[1])
-			else:
-				return ''
+				mouseMoveDo(aFlag, nowPos[0] - prePos[0], nowPos[1] - prePos[1], 0, prePos[1] - nowPos[1])
+		else:
+			bakUDFlag = 'Down'
+			bakUDValue = prePos[1] - nowPos[1]
+			return ''
 	return aFlag
 
 
-def mouseMoveDo(moveX, moveY, valX, valY):
+def mouseMoveDo(aFlag, moveX, moveY, valX, valY):
+	global bakFlag
+	global bakValue
+
 	mousePosition = pyautogui.position()
 	if moveX < 0:
 		if mousePosition[0] + moveX * moveValue[0] < 0:
@@ -322,8 +359,33 @@ def mouseMoveDo(moveX, moveY, valX, valY):
 	if moveY < 0:
 		if mousePosition[1] + moveY * moveValue[0] < 0:
 			return
-	pyautogui.moveRel(valX * moveValue[0], valY * moveValue[0])
 
+	if aFlag == 'Right':
+		if bakLRFlag == 'Left' and -(valX) + actionValue[0] < -(bakLRValue):
+			print('fail: ',aFlag, str(moveX), str(moveY), str(valX), str(valY))
+			print('bakLRFlag',str(bakLRFlag), 'bakLRValue',str(bakLRValue))
+			return
+		pyautogui.moveRel(-(valX * moveValue[0]), 0)
+		print('act: ',aFlag, str(moveX), str(moveY), str(valX), str(valY))
+		print('bakLRFlag',str(bakLRFlag), 'bakLRValue',str(bakLRValue))
+	else:
+		if bakLRFlag == 'Right' and valX + actionValue[0] < bakLRValue:
+			print('fail: ',aFlag, str(moveX), str(moveY), str(valX), str(valY))
+			print('bakLRFlag',str(bakLRFlag), 'bakLRValue',str(bakLRValue))
+			return
+		pyautogui.moveRel(valX * moveValue[0], 0)
+		print('act: ',aFlag, str(moveX), str(moveY), str(valX), str(valY))
+		print('bakLRFlag',str(bakLRFlag), 'bakLRValue',str(bakLRValue))
+
+	if aFlag == 'Up':
+		if bakUDFlag == 'Down' and valY + actionValue[0] < bakUDValue:
+			return
+		pyautogui.moveRel(0, -(valY * moveValue[0]))
+	else:
+		if bakUDFlag == 'Down' and valY + actionValue[0] < bakUDValue:
+			return
+		pyautogui.moveRel(0, valY * moveValue[0])
+	
 
 if __name__ == '__main__':
 	WINDOW_NAME	= 'Trackbars'
