@@ -34,7 +34,7 @@ def main():
 			y = int(args[2])
 
 	print("X/Y: " + str(x) + "/" +  str(y))
-	readCSV('.config')
+	readCSV('config')
 	readImages(datasetPATH)
 	handMouse(x, y)
 
