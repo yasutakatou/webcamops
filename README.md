@@ -15,9 +15,11 @@ python record.py
 
 1-9のキーで保存するファイル名を変更できます。1を押したら1.png、2なら2.pngって具合です。実際のカメラとフィルター後の形を見て、アノテーションしてください。1-9なので9個まで定義できます。
 
-![1](https://github.com/yasutakatou/handmouse/blob/pic/1.png)
-![2](https://github.com/yasutakatou/handmouse/blob/pic/2.png)
-![3](https://github.com/yasutakatou/handmouse/blob/pic/3.png)
+![1](https://github.com/yasutakatou/handmouse/blob/pic/1.png)<br>
+![2](https://github.com/yasutakatou/handmouse/blob/pic/2.png)<br>
+
+アノテーションされたデータセットが出来上がります。<br>
+![3](https://github.com/yasutakatou/handmouse/blob/pic/3.png)<br>
 
 次にconfigファイルに画像に紐づく、マウスの操作なり、キー入力を定義します。<br>
 定義はcsvです。**画像のファイル名＋動作**で定義します。
