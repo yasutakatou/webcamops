@@ -1,6 +1,6 @@
 # handmouse
 
-**「影絵でオペレーション」**ってなやつです。<br>
+「影絵でオペレーション」ってなやつです。<br>
 ジェスチャーではなく、あくまで形を認識して定義されたオペレーションを実行します。
 
 ![demo](https://github.com/yasutakatou/handmouse/blob/pic/handmouse.gif)
