@@ -226,10 +226,10 @@ def doAction(actions):
 			elif i == 'space':
 				pyautogui.press('space')
 			else:
+				pyautogui.press(i)
 				if keyDownFlag != '':
 					pyautogui.keyUp(keyDownFlag)
 					keyDownFlag = ''
-				pyautogui.press(i)
 
 
 def mouseMoveDo(moveX, moveY):
