@@ -67,6 +67,9 @@ python handmouse.py
 ```
 
 こちらも引数を二つ渡せます。画像のX/Yのサイズです。<br>
+
+![bar](https://github.com/yasutakatou/handmouse/blob/pic/trackbars.png)<br>
+
 フィルターされたカメラ画像以外にTrackbarsの窓が出てきます。以下の意味です。
 
 |項目|効果|
