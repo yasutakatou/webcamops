@@ -35,7 +35,7 @@ def main():
 		ret_val, img = cam.read()
 		k = cv2.waitKey(1)
 		cv2.imshow('my webcam', img)
-		if np.all(img) == True:
+		if np.all(img) == False:
 			frame = optimizeImage(img, x, y)
 			cv2.imshow('filter', frame)
 			if k==48:
