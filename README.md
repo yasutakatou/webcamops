@@ -99,4 +99,4 @@ python webcamops.py
 
 キーボードから手を放さずに使いたい場合は以下のように100均の鏡を買ってきてアナログに対応してください！笑<br>
 
-![cam2](https://github.com/yasutakatou/handmouse/blob/pic/cam2.png)
+![cam2](https://github.com/yasutakatou/handmouse/blob/pic/came2.png)
