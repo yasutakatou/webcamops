@@ -1,5 +1,9 @@
 # webcamops
 
+web cameraでPCを操作します。<br>
+
+![cam1](https://github.com/yasutakatou/handmouse/blob/pic/cam1.png)
+
 「影絵でオペレーション」ってなやつです。<br>
 ジェスチャーではなく、あくまで形を認識して定義されたオペレーションを実行します。
 
@@ -92,3 +96,7 @@ python webcamops.py
 あくまで影絵システムなので手や体以外の形でも操作できます。
 
 ![pine](https://github.com/yasutakatou/handmouse/blob/pic/pine.png)
+
+キーボードから手を放さずに使いたい場合は以下のように100均の鏡を買ってきてアナログに対応してください！笑<br>
+
+![cam2](https://github.com/yasutakatou/handmouse/blob/pic/cam2.png)
