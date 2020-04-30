@@ -34,44 +34,44 @@ def main():
 	while True:
 		ret_val, img = cam.read()
 		k = cv2.waitKey(1)
+		frame = optimizeImage(img, x, y)
+		cv2.imshow('filter', frame)
 		cv2.imshow('my webcam', img)
-		if np.all(img) == False:
-			frame = optimizeImage(img, x, y)
-			cv2.imshow('filter', frame)
-			if k==48:
-				i = 0
-				print ("Changed to ",i)
-			elif k==49:
-				i = 1
-				print ("Changed to ",i)
-			elif k==50:
-				i = 2
-				print ("Changed to ",i)
-			elif k==51:
-				i = 3
-				print ("Changed to ",i)
-			elif k==52:
-				i = 4
-				print ("Changed to ",i)
-			elif k==53:
-				i = 5
-				print ("Changed to ",i)
-			elif k==54:
-				i = 6
-				print ("Changed to ",i)
-			elif k==55:
-				i = 7
-				print ("Changed to ",i)
-			elif k==56:
-				i = 8
-				print ("Changed to ",i)
-			elif k==57:
-				i = 9
-				print ("Changed to ",i)
-			elif k==32: 	#space
-				cv2.imwrite(datasetPATH + str(i) + '.png', frame)
-				print ("Saved ", str(i), ".png")
-		if k==27:    # Esc key to stop
+		if k==48:
+			i = 0
+			print ("Changed to ",i)
+		elif k==49:
+			i = 1
+			print ("Changed to ",i)
+		elif k==50:
+			i = 2
+			print ("Changed to ",i)
+		elif k==51:
+			i = 3
+			print ("Changed to ",i)
+		elif k==52:
+			i = 4
+			print ("Changed to ",i)
+		elif k==53:
+			i = 5
+			print ("Changed to ",i)
+		elif k==54:
+			i = 6
+			print ("Changed to ",i)
+		elif k==55:
+			i = 7
+			print ("Changed to ",i)
+		elif k==56:
+			i = 8
+			print ("Changed to ",i)
+		elif k==57:
+			i = 9
+			print ("Changed to ",i)
+		elif k==32: 	#space
+			cv2.imwrite(datasetPATH + str(i) + '.png', frame)
+			print ("Saved ", str(i), ".png")
+		elif k==27:    # Esc key to stop
+			cam.release()
 			cv2.destroyAllWindows()
 			break
 
@@ -88,36 +88,27 @@ def optimizeImage(img, x , y):
 	#	pts = np.array( [ [x,y], [x,y+h], [x+w,y+h], [x+w,y] ] )
 	#	frame = cv2.fillPoly(frame, pts =[pts], color=(0,0,0))
 
-	#Blur the image
-	blur = cv2.blur(frame,(3,3))
-	 	
- 	#Convert to HSV color space
-	hsv = cv2.cvtColor(blur,cv2.COLOR_BGR2HSV)
-		
-	#Create a binary image with where white will be skin colors and rest is black
-	mask2 = cv2.inRange(hsv,np.array([2,50,50]),np.array([15,255,255]))
-		
-	#Kernel matrices for morphological transformation	
-	kernel_square = np.ones((11,11),np.uint8)
-	kernel_ellipse= cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-		
-	#Perform morphological transformations to filter out the background noise
-	#Dilation increase skin color area
-	#Erosion increase skin color area
-	dilation = cv2.dilate(mask2,kernel_ellipse,iterations = 1)
-	erosion = cv2.erode(dilation,kernel_square,iterations = 1)	
-	dilation2 = cv2.dilate(erosion,kernel_ellipse,iterations = 1)	
-	filtered = cv2.medianBlur(dilation2,5)
-	kernel_ellipse= cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(8,8))
-	dilation2 = cv2.dilate(filtered,kernel_ellipse,iterations = 1)
-	kernel_ellipse= cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-	dilation3 = cv2.dilate(filtered,kernel_ellipse,iterations = 1)
-	median = cv2.medianBlur(dilation2,5)
-	ret,thresh = cv2.threshold(median,127,255,0)
-		
-	#Find contours of the filtered frame
-	#contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE) 
-	return thresh
+	out = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+	## FYI: https://qiita.com/ayuma/items/883901c68719abbc7a78
+	# 一般的な二値化
+	#threshold = 100
+	#_, image_th = cv2.threshold(out, threshold, 255, cv2.THRESH_BINARY)
+
+	# 大津の二値化
+	_, image_th = cv2.threshold(out, 0, 255, cv2.THRESH_OTSU)
+
+	# adaptive threshold
+	#image_th = cv2.adaptiveThreshold(out, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 3, 1)
+
+	## FYI: https://qiita.com/ayuma/items/07ec25f1d50629fed698
+	# medianフィルタ
+	blur = cv2.medianBlur(image_th, 3)
+
+	# bilateralフィルタ
+	#blur = cv2.bilateralFilter(image_th, 9, 75, 75)
+
+	return blur
 
 
 if __name__ == '__main__':
