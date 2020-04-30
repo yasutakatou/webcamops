@@ -1,102 +1,94 @@
-# webcamops
+# WebCamOps
 
-web cameraでPCを操作します。<br>
+You can operate the PC with web camera！<br>
 
 ![cam1](https://github.com/yasutakatou/handmouse/blob/pic/cam1.png)
 
-「影絵でオペレーション」ってなやつです。<br>
-ジェスチャーではなく、あくまで形を認識して定義されたオペレーションを実行します。
+While watching something while eating something, grab the mouse to bring up the next screen.
+Repeatedly, my wrist hurts more and more.
+This is a shadow control solution for operating a PC.
+Keep your mouse closed until you finish eating!
 
-![demo](https://github.com/yasutakatou/handmouse/blob/pic/handmouse.gif)
+![demo](https://github.com/yasutakatou/handmouse/blob/pic/webcamops.gif)
 
-最初にアクションさせたい画像をアノテーションします。
+First annotate your figure with a webcam.
 
 ```
 python record.py
 ```
 
-を起動させます。引数を二つ渡せます。画像のX/Yのサイズです。
+This command activates the recording code. Two arguments. The X and Y size of the camera image.You can define up to 9 from 1-9.
+The camera and the filtered video will be displayed at the same time, so make sure that the shadow is displayed.
 
-1-9のキーで保存するファイル名を変更できます。1を押したら1.png、2なら2.pngって具合です。実際のカメラとフィルター後の形を見て、アノテーションしてください。1-9なので9個まで定義できます。
+Annotated dataset is ready.<br>
+![annotation2](https://github.com/yasutakatou/handmouse/blob/pic/annotation2.png)<br>
 
-![1](https://github.com/yasutakatou/handmouse/blob/pic/1.png)<br>
-![2](https://github.com/yasutakatou/handmouse/blob/pic/2.png)<br>
-
-アノテーションされたデータセットが出来上がります。<br>
-![3](https://github.com/yasutakatou/handmouse/blob/pic/3.png)<br>
-
-次にconfigファイルに画像に紐づく、マウスの操作なり、キー入力を定義します。<br>
-定義はcsvです。**画像のファイル名＋動作**で定義します。
+Define the operation in the config file.<br>
+It is in csv format. It is defined by **the image file name and operation**.
 
 ```
 1,right
 ```
 
-であれば1.pngに似た場合に「マウスカーソルを右に移動」になります。<br>
-以下はマウス用の特殊定義です。
+In this case, when it is similar to 1.png, move the mouse cursor to the right.<br>
+Definition for mouse operation.
 
-|定義名|操作|
+|Definition|operation|
 |:---|:---|
-|right|カーソルを右に移動|
-|left|カーソルを左に移動|
-|up|カーソルを上に移動|
-|down|カーソルを下に移動|
-|click|左クリック|
-|rclick|右クリック|
-|dclick|左ダブルクリック|
+|right|Move mouse cursor right|
+|left|Move mouse cursor to left|
+|up|Move mouse cursor up|
+|down|Move mouse cursor down|
+|click|Left click|
+|rclick|right click|
+|dclick|Left double click|
 
-キー入力させたい場合は特殊定義以外の英字を書きます。<br>
- , で区切ることで～を押しながらのショートカットキー操作を定義できます。
+For key input, write the character you want to input or the definition.<br>
+It will be pressed at the same time when separated by a space.
 
 ```
-8,ctrl,c
+1,ctrl w
 ```
 
-であれば8.pngに似た場合に「Ctrl+c」をキー入力します。<br>
-以下はキーボード用の特殊定義です。
+Type Ctrl + w if it looks like 1.png.<br>
+Below are the definitions for the keyboard.
 
-|定義名|操作|
+|Definition|operation|
 |:---|:---|
-|shift|shiftを押しながら|
-|ctrl|ctrlを押しながら|
-|alt|altを押しながら|
-|enter|エンターキー|
-|space|スペースキー|
+|shift|holding the shift key|
+|ctrl|holding the ctrl key|
+|alt|holding the alt key|
 
-顔とか何かがいつも映り込んでいるような環境では **none**　を定義すると「何もしない」になります。
+For other keys, see below.It depends on pyautogui.
+(KEYBOARD_KEYS)[https://pyautogui.readthedocs.io/en/latest/keyboard.html]
+
+**none** is a definition that does nothing. This is useful if you are always in the picture.
 
 ```
 1,none
 ```
 
-これで映り込んでいる画像を何もしないに設定すれば勝手に動くのを防げます。
-
-定義が出来たら本体を起動させます。<br>
-OpenCVで算出した画像類似度の閾値を満たせば定義にそって操作してくれます。
+Once the config is complete, run the operation code.
 
 ```
-python webcamops.py
+python webcamops.py Chrome
 ```
 
-こちらも引数を二つ渡せます。画像のX/Yのサイズです。<br>
+Three arguments. Window Title,The X and Y size of the camera.<br>
 
-![bar](https://github.com/yasutakatou/handmouse/blob/pic/trackbars.png)<br>
+![bar](https://github.com/yasutakatou/handmouse/blob/pic/trackbar2.png)<br>
 
-フィルターされたカメラ画像以外にTrackbarsの窓が出てきます。以下の意味です。
+After launching, the Trackbars window will appear in addition to the camera image.
 
-|項目|効果|
+|item|effect|
 |:---|:---|
-|actionValue|閾値です。カメラの解像度で頻繁に検知する場合は値を上げてください|
-|moveValue|マウスの移動量です。大きいほど一度に多く移動します|
-|Horizon|カメラ画像を水平反転します|
-|Vetical|カメラ画像を垂直反転します|
-|Stop|操作を一時停止します。再開はもう一度押してください|
-|Exit|プログラムを停止します|
+|repeatValue|The number of repetitions. For fast PCs it can prevent frequent detections.|
+|moveValue|The amount of mouse movement. The larger it moves, the more it moves at once|
+|Horizon|Horizontal flip|
+|Vetical|Vertical flip|
+|Stop|Pause. Press again to resume|
+|Exit|Stop the program|
 
-あくまで影絵システムなので手や体以外の形でも操作できます。
+Since it is a shadow drawing method, you can operate it with a shape other than your hand or body.
 
 ![pine](https://github.com/yasutakatou/handmouse/blob/pic/pine.png)
-
-キーボードから手を放さずに使いたい場合は以下のように100均の鏡を買ってきてアナログに対応してください！笑<br>
-
-![cam2](https://github.com/yasutakatou/handmouse/blob/pic/came2.png)
