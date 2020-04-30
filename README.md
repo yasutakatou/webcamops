@@ -21,7 +21,7 @@ This command activates the recording code. Two arguments. The X and Y size of th
 The camera and the filtered video will be displayed at the same time, so make sure that the shadow is displayed.
 
 Annotated dataset is ready.<br>
-![annotation2](https://github.com/yasutakatou/handmouse/blob/pic/annotation2.png)<br>
+![annotation2](https://github.com/yasutakatou/handmouse/blob/pic/annotation3.png)<br>
 
 Define the operation in the config file.<br>
 It is in csv format. It is defined by **the image file name and operation**.
