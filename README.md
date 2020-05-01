@@ -1,15 +1,16 @@
 # WebCamOps
 
-You can operate the PC with web camera！<br>
+![demo](https://github.com/yasutakatou/handmouse/blob/pic/webcamops.gif)
+
+While watching something on PC while eating something, To display the next screen, you grab the mouse from spoon.
+If you keep repeating, your wrist hurts more and more.
+This solution is a shadow control for operating a PC. You forget to grab the mouse, while your eating.
+More,This solution don't use Deep Leaning, very fast! (Even in my poor notebook, Comfortable do.)
 
 ![cam1](https://github.com/yasutakatou/handmouse/blob/pic/cam1.png)
+Old laptop webcam is enough spec!
 
-While watching something while eating something, grab the mouse to bring up the next screen.
-Repeatedly, my wrist hurts more and more.
-This is a shadow control solution for operating a PC.
-Keep your mouse closed until you finish eating!
-
-![demo](https://github.com/yasutakatou/handmouse/blob/pic/webcamops.gif)
+<HR>
 
 First annotate your figure with a webcam.
 
@@ -17,13 +18,14 @@ First annotate your figure with a webcam.
 python record.py
 ```
 
-This command activates the recording code. Two arguments. The X and Y size of the camera image.You can define up to 9 from 1-9.
-The camera and the filtered video will be displayed at the same time, so make sure that the shadow is displayed.
+This code is recording your figure to picture file. Two arguments. The X and Y size of the camera. (default: x = 300, y = 300)
+After running, The camera and the filtered video will be displayed at the same time.
+You save data by press key .You can define up to 9 from 1-9.
 
 Annotated dataset is ready.<br>
 ![annotation2](https://github.com/yasutakatou/handmouse/blob/pic/annotation3.png)<br>
 
-Define the operation in the config file.<br>
+Second, define the operation in the config file.<br>
 It is in csv format. It is defined by **the image file name and operation**.
 
 ```
