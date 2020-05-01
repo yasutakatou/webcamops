@@ -92,11 +92,12 @@ Three arguments. Window Title,The X and Y size of the camera.<br>
 
 Window title can search by a part of the character string.<br>
 If you want to operate "Chrome", you set arg is "Chrome".<br>
-You don't have to set full window title. "Google - Google Chrome"
+You don't have to set full window title. "Google - Google Chrome"<br>
+<br>
 
-![bar](https://github.com/yasutakatou/webcamops/blob/pic/taskbar2.png)<br>
+After launching, the Trackbars window will appear in addition to the camera image.<br>
 
-After launching, the Trackbars window will appear in addition to the camera image.
+![bar](https://github.com/yasutakatou/webcamops/blob/pic/taskbar2.png)
 
 |item|effect|
 |:---|:---|
