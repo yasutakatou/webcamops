@@ -1,31 +1,37 @@
 # WebCamOps
 
-![demo](https://github.com/yasutakatou/handmouse/blob/pic/webcamops.gif)
+![demo](https://github.com/yasutakatou/webcamops/blob/pic/webcamops.gif)
 
-While watching something on PC while eating something, To display the next screen, you grab the mouse from spoon.
-If you keep repeating, your wrist hurts more and more.
-This solution is a shadow control for operating a PC. You forget to grab the mouse, while your eating.
-More,This solution don't use Deep Leaning, very fast! (Even in my poor notebook, Comfortable do.)
+## solution
 
-![cam1](https://github.com/yasutakatou/handmouse/blob/pic/cam1.png)
-Old laptop webcam is enough spec!
+While watching something on PC while eating something, To display the next screen, you grab the mouse from spoon.<br>
+If you keep repeating, your wrist hurts more and more...<br>
+<br>
+This solution is a shadow control for operating a PC. You forget to grab the mouse, while your eating.<br>
+More,This solution don't use Deep Leaning, very fast! (Even in my poor notebook, Comfortable do.)<br>
+
+![cam1](https://github.com/yasutakatou/webcamops/blob/pic/cam1.png)
+<br>Old laptop webcam is enough spec!
 
 <HR>
 
-First annotate your figure with a webcam.
+## Preparation
+
+**First** annotate your figure with a webcam.
 
 ```
 python record.py
 ```
 
-This code is recording your figure to picture file. Two arguments. The X and Y size of the camera. (default: x = 300, y = 300)
-After running, The camera and the filtered video will be displayed at the same time.
-You save data by press key .You can define up to 9 from 1-9.
+This code is recording your figure to picture file. Two arguments.<br>
+The X and Y size of the camera. **(default: x = 300, y = 300)**<br>
+After running, The camera and the filtered video will be displayed at the same time.<br>
+You save data by press key. **You can define up to 9 from 1-9.**<br>
 
 Annotated dataset is ready.<br>
-![annotation2](https://github.com/yasutakatou/handmouse/blob/pic/annotation3.png)<br>
+![annotation2](https://github.com/yasutakatou/webcamops/blob/pic/annotation3.png)<br>
 
-Second, define the operation in the config file.<br>
+**Second**, define the operation in the config file.<br>
 It is in csv format. It is defined by **the image file name and operation**.
 
 ```
@@ -33,7 +39,8 @@ It is in csv format. It is defined by **the image file name and operation**.
 ```
 
 In this case, when it is similar to 1.png, move the mouse cursor to the right.<br>
-Definition for mouse operation.
+<br>
+### Definition for mouse operation.
 
 |Definition|operation|
 |:---|:---|
@@ -45,15 +52,16 @@ Definition for mouse operation.
 |rclick|right click|
 |dclick|Left double click|
 
-For key input, write the character you want to input or the definition.<br>
-It will be pressed at the same time when separated by a space.
+In case of key input, write the character or special definition.<br>
+**When separated by a space, Its meaning pressed at the same time**.
 
 ```
 1,ctrl w
 ```
 
-Type Ctrl + w if it looks like 1.png.<br>
-Below are the definitions for the keyboard.
+In this case, type Ctrl + w if it looks like 1.png. <br>
+<br>
+### Definitions for the keyboard.
 
 |Definition|operation|
 |:---|:---|
@@ -61,16 +69,20 @@ Below are the definitions for the keyboard.
 |ctrl|holding the ctrl key|
 |alt|holding the alt key|
 
-For other keys, see below.It depends on pyautogui.
-(KEYBOARD_KEYS)[https://pyautogui.readthedocs.io/en/latest/keyboard.html]
+For other keys, see below.It depends on pyautogui.[pyautogui document](https://pyautogui.readthedocs.io/en/latest/keyboard.html#keyboard-keys)
 
-**none** is a definition that does nothing. This is useful if you are always in the picture.
+ex) 1,ctrl space<br>
+Type Ctrl + Space if it looks like 1.png.<br>
+
+**none** is a definition that does nothing. This is useful if something figure are always in the picture.
 
 ```
 1,none
 ```
 
-Once the config is complete, run the operation code.
+## Ops!
+
+Write the config is complete, run for operation code.
 
 ```
 python webcamops.py Chrome
@@ -78,19 +90,25 @@ python webcamops.py Chrome
 
 Three arguments. Window Title,The X and Y size of the camera.<br>
 
-![bar](https://github.com/yasutakatou/handmouse/blob/pic/trackbar2.png)<br>
+Window title can search by a part of the character string.<br>
+If you want to operate "Chrome", you set arg is "Chrome".<br>
+You don't have to set full window title. "Google - Google Chrome"
+
+![bar](https://github.com/yasutakatou/webcamops/blob/pic/taskbar2.png)<br>
 
 After launching, the Trackbars window will appear in addition to the camera image.
 
 |item|effect|
 |:---|:---|
 |repeatValue|The number of repetitions. For fast PCs it can prevent frequent detections.|
-|moveValue|The amount of mouse movement. The larger it moves, the more it moves at once|
+|moveValue|The amount of mouse movement. The larger values, the more it moves at once.|
 |Horizon|Horizontal flip|
 |Vetical|Vertical flip|
 |Stop|Pause. Press again to resume|
 |Exit|Stop the program|
 
-Since it is a shadow drawing method, you can operate it with a shape other than your hand or body.
+Since it is a shadow matching method, you can operate it with a shape other than your hand or body.<br>
 
-![pine](https://github.com/yasutakatou/handmouse/blob/pic/pine.png)
+![pine](https://github.com/yasutakatou/webcamops/blob/pic/pine.png)
+
+*Japanese lovly candy.*
